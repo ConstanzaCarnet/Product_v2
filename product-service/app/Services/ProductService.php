@@ -12,13 +12,13 @@ class ProductService
     private const DEFAULT_LIMIT = 10;
     private const MAX_LIMIT = 100;
 
-    public function create(array $data): Product
+    /*public function create(array $data): Product
     {
         // Business rule: active by default (spec section 2.2)
         $data['active'] = true;
 
         return Product::create($data);
-    }
+    }*/
 
     public function delete(Product $product): void
     {
@@ -96,13 +96,10 @@ class ProductService
         ];
     }
 
-    public function store(StoreProductRequest $request): JsonResponse
-    {
-        $product = $this->productService->create($request->validated());
 
-        return (new ProductResource($product))
-            ->response()
-            ->setStatusCode(201);
+    public function store(array $data): Product
+    {
+        return Product::create($data);
     }
 
     public function update(Product $product, array $data): Product

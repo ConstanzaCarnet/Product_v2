@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Resources\ProductCollection;
 
+use App\Http\Requests\UpdateProductRequest;
+use App\Http\Requests\StoreProductRequest;
+
 class ProductController extends Controller
 {
     public function __construct(
@@ -25,6 +28,14 @@ class ProductController extends Controller
         ))->response()->setStatusCode(200);
     }
 
+    public function store(StoreProductRequest $request): JsonResponse
+    {
+        $product = $this->productService->store($request->validated());
+
+        return (new ProductResource($product))
+            ->response()
+            ->setStatusCode(201);
+    }
 
     public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {

@@ -34,7 +34,7 @@ class StoreProductRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:3', 'max:255'],
             'description' => ['nullable', 'string', 'max:1000'],
-            'price' => ['required', 'numeric', 'gt:0', 'max:999999.99', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'price' => ['required', 'numeric','gt:0','regex:/^\d+(\.\d{1,2})?$/'],
             'stock' => ['required', 'integer', 'min:0'],
             // Prevent modification of auto-generated fields
             'id' => ['prohibited'],

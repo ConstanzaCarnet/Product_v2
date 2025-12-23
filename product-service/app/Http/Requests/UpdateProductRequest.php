@@ -31,15 +31,12 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['sometimes', 'string', 'min:3', 'max:255'],
-            'description' => ['nullable', 'string', 'max:1000'],
-            'price' => ['sometimes', 'numeric', 'gt:0', 'max:999999.99', 'regex:/^\d+(\.\d{1,2})?$/'],
-            'stock' => ['sometimes', 'integer', 'min:0'],
-            'active' => ['sometimes', 'boolean'],
-            // Prevent modification of auto-generated fields
-            'id' => ['prohibited'],
-            'created_at' => ['prohibited'],
-            'updated_at' => ['prohibited'],
+            'name'        => ['sometimes', 'string', 'max:255'],
+            'description' => ['sometimes', 'nullable', 'string'],
+            'price'       => ['sometimes', 'numeric', 'min:0'],
+            'stock'       => ['sometimes', 'integer', 'min:0'],
+            'active'      => ['sometimes', 'boolean'],
+            'image'       => ['sometimes', 'nullable', 'string'],
         ];
     }
 
