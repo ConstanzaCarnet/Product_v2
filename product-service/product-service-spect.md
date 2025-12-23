@@ -780,6 +780,11 @@ POST /products
 - [ ] Manejo de 500 Internal Server Error
 - [ ] Formato consistente de errores
 
+## 12 Testing Strategy
+
+- Business logic is tested at service level
+- Controllers are kept thin
+- Database assertions ensure data integrity
 ---
 
 **Fin de la Especificación v1.2.0**
