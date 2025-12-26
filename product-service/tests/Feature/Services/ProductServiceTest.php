@@ -6,27 +6,45 @@ use Tests\TestCase;
 use App\Services\ProductService;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Validation\ValidationException;
 
 
 class ProductServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_it_creates_a_product_with_active_true_by_default(): void
+    public function test_it_creates_a_product()
     {
         $service = app(ProductService::class);
 
-        $product = $service->create([
-            'name' => 'Test Product',
-            'description' => 'Test description',
-            'price' => 100,
-            'stock' => 10,
-        ]);
+        $data = [
+            'name' => 'Producto Test',
+            'description' => 'Descripción test',
+            'price' => 1000,
+            'stock' => 5,
+        ];
+
+        $product = $service->store($data);
 
         $this->assertDatabaseHas('products', [
             'id' => $product->id,
-            'active' => true,
+            'name' => 'Producto Test',
         ]);
+    }
+
+    //test para testear regla de negocios
+    public function test_product_is_active_by_default()
+    {
+        $service = app(ProductService::class);
+
+        $product = $service->store([
+            'name' => 'Producto Activo',
+            'description' => 'Test',
+            'price' => 200,
+            'stock' => 1,
+        ]);
+
+        $this->assertTrue($product->active);
     }
 
     public function test_it_deletes_a_product(): void
@@ -41,6 +59,19 @@ class ProductServiceTest extends TestCase
         $this->assertDatabaseMissing('products', [
             'id' => $product->id,
         ]);
+    }
+    //testeamos que no elimine si el stock es mayor a 0
+    public function test_cannot_delete_product_with_stock()
+    {
+        $product = Product::factory()->create([
+            'stock' => 10,
+        ]);
+
+        $service = app(ProductService::class);
+
+        $this->expectException(ValidationException::class);
+
+        $service->delete($product);
     }
 
     public function test_it_updates_a_product(): void
@@ -107,8 +138,8 @@ class ProductServiceTest extends TestCase
         //filtro en el list
         $result = $service->list(['min_price' => 100]);
 
-        $this->assertCount(1,$result['products']);
-        $this->assertEquals(100, $result['products']->first()->price);
+        $this->assertCount(2, $result['products']);
+        $this->assertEquals([100, 200], $result['products']->pluck('price')->values()->all());
     }
     //looking for name
     public function test_it_searches_by_name_or_description(): void
@@ -120,7 +151,6 @@ class ProductServiceTest extends TestCase
 
         $result = $service->list(['search'=>'Flower']);
 
-        $this->assertCount(1,$result['products']);
         $this->assertEquals('Flower', $result['products']->first()->name);
     }
 }

@@ -24,6 +24,10 @@ class Product extends Model
         'image',
     ];
 
+    protected $casts = [
+        'active' => 'boolean',
+    ];
+    
     /**
      * The attributes that should be hidden for serialization.
      *

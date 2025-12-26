@@ -99,6 +99,7 @@ class ProductService
 
     public function store(array $data): Product
     {
+        $data['active'] = true;
         return Product::create($data);
     }
 

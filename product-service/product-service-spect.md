@@ -787,4 +787,10 @@ POST /products
 - Database assertions ensure data integrity
 ---
 
+## 13 Security
+
+- Authentication: Laravel Sanctum
+- Authorization: Policies
+- Protected routes via middleware
+
 **Fin de la Especificación v1.2.0**
