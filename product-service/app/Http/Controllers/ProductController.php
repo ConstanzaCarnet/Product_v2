@@ -8,7 +8,7 @@ use App\Services\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Resources\ProductCollection;
-
+use App\Http\Responses\ApiResponse;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Requests\StoreProductRequest;
 
@@ -32,9 +32,8 @@ class ProductController extends Controller
     {
         $product = $this->productService->store($request->validated());
 
-        return (new ProductResource($product))
-            ->response()
-            ->setStatusCode(201);
+        new ProductResource($product);
+        return ApiResponse::success($product, 'Producto creado', 201);
     }
 
     public function update(UpdateProductRequest $request, Product $product): JsonResponse
