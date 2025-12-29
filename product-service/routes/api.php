@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Product API Routes
@@ -18,6 +18,15 @@ use Illuminate\Support\Facades\Route;
 | - Validates ID format automatically
 |
 */
+
+
+Route::post('login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+
+    Route::apiResource('products', ProductController::class);
+});
 
 // GET /api/products - List all products with pagination and filters
 Route::get('products', [ProductController::class, 'index']);

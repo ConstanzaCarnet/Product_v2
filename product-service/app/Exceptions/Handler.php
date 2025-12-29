@@ -36,6 +36,13 @@ class Handler extends ExceptionHandler
                     409
                 );
             }
+            
+            if (config('app.debug')) {
+                return response()->json([
+                    'error' => class_basename($e),
+                    'message' => $e->getMessage(),
+                ], 500);
+            }
 
             return response()->json([
                 'error' => 'INTERNAL_SERVER_ERROR',

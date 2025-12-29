@@ -701,7 +701,14 @@ POST /products
   ]
 }
 ```
+```bash
+POST /api/login
 
+⚠️ Development-only endpoint.
+
+Used to simulate authentication and token generation during local development.
+Not intended for production usage in a real microservices environment.
+```
 ---
 
 ## 10. Resumen de Decisiones de Diseño
@@ -792,5 +799,13 @@ POST /products
 - Authentication: Laravel Sanctum
 - Authorization: Policies
 - Protected routes via middleware
+
+### 14 Authentication
+
+This service uses token-based authentication (Laravel Sanctum) **for development and learning purposes only**.
+
+In a real microservices architecture:
+- Authentication and token issuance should be handled by a dedicated Auth Service.
+- This Product Service would only validate incoming tokens.
 
 **Fin de la Especificación v1.2.0**

@@ -31,3 +31,29 @@ Example:
   "message": "Validation failed",
   "details": { ... }
 }
+
+
+## Authentication (Important Note)
+
+This microservice includes a basic authentication flow using Laravel Sanctum.
+
+⚠️ This is **NOT required nor recommended** in a real microservices architecture.
+
+### Why is authentication included?
+
+Authentication was implemented in this service **for learning and demonstration purposes only**, in order to:
+
+- Practice token-based authentication
+- Understand how Sanctum works internally
+- Secure endpoints during local development
+- Simulate protected routes using `auth:sanctum`
+
+### How it should work in a real system
+
+In a real-world microservices architecture:
+
+- Authentication should be handled by a dedicated **Auth Service**
+- Tokens should be issued by that service
+- This Product Service should only:
+  - Validate incoming tokens
+  - Trust the identity provided by the Auth Service
