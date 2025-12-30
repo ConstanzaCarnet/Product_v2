@@ -14,6 +14,8 @@ use App\Http\Requests\StoreProductRequest;
 
 class ProductController extends Controller
 {
+    
+
     public function __construct(
         private ProductService $productService
     ) {}
@@ -30,14 +32,17 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request): JsonResponse
     {
-        $product = $this->productService->store($request->validated());
+        $this->authorize('create', Product::class);
 
-        new ProductResource($product);
+        $product = $this->productService->store($request->validated());
+    
         return ApiResponse::success($product, 'Producto creado', 201);
     }
 
     public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {
+        $this->authorize('update', Product::class);
+
         $product = $this->productService->update($product, $request->validated());
 
         return (new ProductResource($product))
@@ -47,9 +52,11 @@ class ProductController extends Controller
 
     public function destroy(Product $product): JsonResponse
     {
+        $this->authorize('delete', $product);
+
         $this->productService->delete($product);
-        
-        return response()->json(null, 204);
+    
+        return ApiResponse::success(null, 'Producto eliminado', 200);
     }
     //show method
     public function show(Product $product):JsonResponse

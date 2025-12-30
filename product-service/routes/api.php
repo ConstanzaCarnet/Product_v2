@@ -19,15 +19,22 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-
 Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::apiResource('products', ProductController::class);
+
+    Route::get('/check-auth', function (Request $request) {
+        return [
+            'user' => $request->user(),
+            'token' => $request->user()?->currentAccessToken(),
+        ];
+    });
 });
 
+/*
 // GET /api/products - List all products with pagination and filters
 Route::get('products', [ProductController::class, 'index']);
 
@@ -42,7 +49,7 @@ Route::put('products/{product}', [ProductController::class, 'update']);
 
 // DELETE /api/products/{product} - Delete product (Route Model Binding)
 Route::delete('products/{product}', [ProductController::class, 'destroy']);
-
+*/
 /*Route::middleware('auth:sanctum')->group(function () {
     Route::post('/products', [ProductController::class, 'store']);
     Route::put('/products/{product}', [ProductController::class, 'update']);
